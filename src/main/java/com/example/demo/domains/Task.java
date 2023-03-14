@@ -1,0 +1,248 @@
+package com.example.demo.domains;
+/*
+    TASK_ID	bigint PK
+	TASK_NAME	varchar(25)
+	TASK_STATUS	varchar(1)
+	PROJECT_ID	bigint
+	COORDINATOR_ID	bigint
+	TASK_START_DATE	date #https://www.baeldung.com/hibernate-date-time
+	TASK_END_DATE	date
+ */
+
+
+import java.time.LocalDate;
+import java.util.Objects;
+import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapsId;
+import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
+@Entity
+@Table(name="tasks")
+public class Task {
+    @Id
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)
+    Long task_id;
+
+    @Column(length=25)
+    String task_name;
+
+    @Column(length=1)
+    String task_status;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
+    @MapsId("project_id")
+    @JoinColumn(
+            name = "project_id",
+            nullable = false,
+            foreignKey = @ForeignKey(
+                    name = "fk_tasks_project_id"
+                    )
+            ) 
+    @JsonIgnore
+    private Project project;
+    //Long project_id;
+
+    @ManyToMany(mappedBy = "tasks",cascade = CascadeType.ALL)
+    //Non serve perché sono simmetriche
+    // @JoinTable    (
+    //     name = "emp_tasks", 
+    //     joinColumns = @JoinColumn(name = "task_id", nullable = false), 
+    //     inverseJoinColumns = @JoinColumn(name = "employee_id", nullable = false),
+        
+    //     foreignKey = @ForeignKey(
+    //       name = "fk_tasks_employes_id"
+    //       )
+    // )
+    @JsonIgnore
+    Set<Employee> employees;
+
+   
+
+    LocalDate task_start_date;
+
+    LocalDate task_end_date;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
+    @MapsId("employee_id")
+    @JoinColumn(
+            name = "coordinator_id", // Long coordinator_id;
+            nullable = false,
+            foreignKey = @ForeignKey(
+                    name = "fk_projects_coordinator_id"
+                    )
+            ) 
+    @JsonIgnore
+    private Employee coordinator;
+
+        public Task() {
+        }
+
+        public Task(Long task_id, String task_name, String task_status, Project project, Set<Employee> employess, LocalDate task_start_date, LocalDate task_end_date, Employee coordinator) {
+                this.task_id = task_id;
+                this.task_name = task_name;
+                this.task_status = task_status;
+                this.project = project;
+                this.employees = employess;
+                this.task_start_date = task_start_date;
+                this.task_end_date = task_end_date;
+                this.coordinator = coordinator;
+        }
+
+        public Long getTask_id() {
+                return this.task_id;
+        }
+
+        public void setTask_id(Long task_id) {
+                this.task_id = task_id;
+        }
+
+        public String getTask_name() {
+                return this.task_name;
+        }
+        public Long getIdProject(){
+                return this.project.project_id;
+        }
+        public Long getIdCordinator(){
+                return this.coordinator.employee_id;
+        }
+
+        public void setTask_name(String task_name) {
+                this.task_name = task_name;
+        }
+
+        public String getTask_status() {
+                return this.task_status;
+        }
+
+        public void setTask_status(String task_status) {
+                this.task_status = task_status;
+        }
+
+        public Project getProject() {
+                return this.project;
+        }
+
+        public void setProject(Project project) {
+                this.project = project;
+        }
+
+        public Set<Employee> getEmployess() {
+                return this.employees;
+        }
+
+        public void setEmployess(Set<Employee> employess) {
+                this.employees = employess;
+        }
+
+        public LocalDate getTask_start_date() {
+                return this.task_start_date;
+        }
+
+        public void setTask_start_date(LocalDate task_start_date) {
+                this.task_start_date = task_start_date;
+        }
+
+        public LocalDate getTask_end_date() {
+                return this.task_end_date;
+        }
+
+        public void setTask_end_date(LocalDate task_end_date) {
+                this.task_end_date = task_end_date;
+        }
+        @JsonIgnore
+        public Employee getCoordinator() {
+                return this.coordinator;
+        }
+
+        public void setCoordinator(Employee coordinator) {
+                this.coordinator = coordinator;
+        }
+
+        public Task task_id(Long task_id) {
+                setTask_id(task_id);
+                return this;
+        }
+
+        public Task task_name(String task_name) {
+                setTask_name(task_name);
+                return this;
+        }
+
+        public Task task_status(String task_status) {
+                setTask_status(task_status);
+                return this;
+        }
+
+        public Task project(Project project) {
+                setProject(project);
+                return this;
+        }
+
+        public Task employess(Set<Employee> employess) {
+                setEmployess(employess);
+                return this;
+        }
+
+        public Task task_start_date(LocalDate task_start_date) {
+                setTask_start_date(task_start_date);
+                return this;
+        }
+
+        public Task task_end_date(LocalDate task_end_date) {
+                setTask_end_date(task_end_date);
+                return this;
+        }
+
+        public Task coordinator(Employee coordinator) {
+                setCoordinator(coordinator);
+                return this;
+        }
+
+        @Override
+    public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        if (!(o instanceof Task)) {
+            return false;
+        }
+        Task task = (Task) o;
+        return Objects.equals(task_id, task.task_id);
+        }
+
+        @Override
+        public int hashCode() {
+                return Objects.hash(task_id);
+        }
+
+        @Override
+        public String toString() {
+                return "{" +
+                        " task_id='" + getTask_id() + "'" +
+                        ", task_name='" + getTask_name() + "'" +
+                        ", task_status='" + getTask_status() + "'" +
+                        ", project='" + getProject() + "'" +
+                        ", employess='" + getEmployess() + "'" +
+                        ", task_start_date='" + getTask_start_date() + "'" +
+                        ", task_end_date='" + getTask_end_date() + "'" +
+                        ", coordinator='" + getCoordinator() + "'" +
+                        "}";
+        }
+    
+    
+
+}
