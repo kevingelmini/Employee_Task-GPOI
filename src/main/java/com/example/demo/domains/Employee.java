@@ -47,8 +47,9 @@ public class Employee {
     @JsonIgnore
     Set<Task> coordinator_tasks;
     
-
-    @ManyToMany(cascade = CascadeType.ALL)
+    //LAZY: rallenta le richieste. Da la possiboità di ottimizzare la gestione della memoria. JSON non fa richieste.
+    //EAGER: carica preventivamente i dati
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
       name = "emp_tasks", 
       joinColumns = @JoinColumn(name = "employee_id", nullable = false), 
@@ -158,7 +159,7 @@ public class Employee {
     public void setCoordinator_tasks(Set<Task> coordinator_tasks) {
         this.coordinator_tasks = coordinator_tasks;
     }
-    //@JsonIgnore
+    @JsonIgnore
     public Set<Task> getTasks() {
         return this.tasks;
     }

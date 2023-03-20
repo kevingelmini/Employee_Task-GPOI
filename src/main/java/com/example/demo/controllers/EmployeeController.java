@@ -25,7 +25,7 @@ import com.example.demo.services.EmployeeService;
 @CrossOrigin(origins = "*", methods = { RequestMethod.GET, RequestMethod.POST, RequestMethod.DELETE,
         RequestMethod.PUT }, maxAge = 3600)
 public class EmployeeController {
-
+    //DT= --> DATA TRANSFER OBJECT: permette di filtrare le informazioni in uscita
     EmployeeService employeeService;
 
     public EmployeeController(EmployeeService employeeService) {
@@ -68,9 +68,9 @@ public class EmployeeController {
         else
             return new ResponseEntity<Employee>(HttpStatus.NOT_FOUND);
     }
-    @PostMapping("/{idDip}/{idTask}")
-    public ResponseEntity<Employee> addDipendente(@PathVariable Long idDip, @PathVariable Long idTask) {
-        Optional<Employee> opt= this.employeeService.addTask(idDip,idTask);
+    @PutMapping("/{idDip}/{idTask}")
+    public ResponseEntity<Employee> addTaskDipendente(@PathVariable Long idDip, @PathVariable Long idTask) {
+        Optional<Employee> opt= this.employeeService.addTaskToEmployee(idDip,idTask);
         if (opt.isPresent())
             return new ResponseEntity<Employee>(opt.get(),HttpStatus.OK);
         else    

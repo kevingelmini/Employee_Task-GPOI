@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.domains.Employee;
@@ -13,12 +14,12 @@ import com.example.demo.repositories.TaskRepository;
 
 @Service
 public class EmployeeService {
-
     EmployeeRepo employeeRepo;
     TaskRepository taskRepo;
 
-    public EmployeeService(EmployeeRepo employeeRepo){
+    public EmployeeService(EmployeeRepo employeeRepo,TaskRepository taskRepo){
         this.employeeRepo=employeeRepo;
+        this.taskRepo=taskRepo;
     }
 
     public List<Employee> findAll(){
@@ -46,7 +47,7 @@ public class EmployeeService {
         }
         return opt;
     }
-    public Optional<Employee> addTask(Long idDip, Long idTask){
+    public Optional<Employee> addTaskToEmployee(Long idDip, Long idTask){
         Optional<Employee> e = this.employeeRepo.findById(idDip);
 		Optional<Task> t = this.taskRepo.findById(idTask);
         if(e.isPresent() && t.isPresent()){
@@ -58,7 +59,7 @@ public class EmployeeService {
 			employeeRepo.save(eOggetto);
 		}else
 			System.out.println("EMP-TASK non trovati");
-        
+            e = this.employeeRepo.findById(idDip);
         return e;
     }
 }

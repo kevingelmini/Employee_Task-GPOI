@@ -35,7 +35,6 @@ import jakarta.persistence.*;
 @Table(name="tasks")
 public class Task {
     @Id
-    //@GeneratedValue(strategy = GenerationType.IDENTITY)
     Long task_id;
 
     @Column(length=25)
@@ -44,7 +43,7 @@ public class Task {
     @Column(length=1)
     String task_status;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
+    @ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
     @MapsId("project_id")
     @JoinColumn(
             name = "project_id",
@@ -57,7 +56,7 @@ public class Task {
     private Project project;
     //Long project_id;
 
-    @ManyToMany(mappedBy = "tasks",cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "tasks",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     //Non serve perché sono simmetriche
     // @JoinTable    (
     //     name = "emp_tasks", 
@@ -77,7 +76,7 @@ public class Task {
 
     LocalDate task_end_date;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
+    @ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
     @MapsId("employee_id")
     @JoinColumn(
             name = "coordinator_id", // Long coordinator_id;
@@ -92,12 +91,12 @@ public class Task {
         public Task() {
         }
 
-        public Task(Long task_id, String task_name, String task_status, Project project, Set<Employee> employess, LocalDate task_start_date, LocalDate task_end_date, Employee coordinator) {
+        public Task(Long task_id, String task_name, String task_status, Project project, Set<Employee> employees, LocalDate task_start_date, LocalDate task_end_date, Employee coordinator) {
                 this.task_id = task_id;
                 this.task_name = task_name;
                 this.task_status = task_status;
                 this.project = project;
-                this.employees = employess;
+                this.employees = employees;
                 this.task_start_date = task_start_date;
                 this.task_end_date = task_end_date;
                 this.coordinator = coordinator;
@@ -141,12 +140,12 @@ public class Task {
                 this.project = project;
         }
 
-        public Set<Employee> getEmployess() {
+        public Set<Employee> getEmployees() {
                 return this.employees;
         }
 
-        public void setEmployess(Set<Employee> employess) {
-                this.employees = employess;
+        public void setEmployees(Set<Employee> employees) {
+                this.employees = employees;
         }
 
         public LocalDate getTask_start_date() {
@@ -193,8 +192,8 @@ public class Task {
                 return this;
         }
 
-        public Task employess(Set<Employee> employess) {
-                setEmployess(employess);
+        public Task employees(Set<Employee> employees) {
+                setEmployees(employees);
                 return this;
         }
 
@@ -236,7 +235,7 @@ public class Task {
                         ", task_name='" + getTask_name() + "'" +
                         ", task_status='" + getTask_status() + "'" +
                         ", project='" + getProject() + "'" +
-                        ", employess='" + getEmployess() + "'" +
+                        ", employees='" + getEmployees() + "'" +
                         ", task_start_date='" + getTask_start_date() + "'" +
                         ", task_end_date='" + getTask_end_date() + "'" +
                         ", coordinator='" + getCoordinator() + "'" +

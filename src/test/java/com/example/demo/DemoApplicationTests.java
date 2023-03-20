@@ -1,6 +1,7 @@
 package com.example.demo;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -20,22 +21,14 @@ class DemoApplicationTests {
 	@Autowired
 	EmployeeService employeeService;
 	@Autowired
-	TaskService taskService; 
+	TaskService taskService;
+
 	@Test
 	void contextLoads() {
 
-		//employeeRepo.deleteById(587191L);
-		Optional<Employee> e = this.employeeService.findById(587191L);
-		Optional<Task> t = this.taskService.findById(3142L);
-		if(e.isPresent() && t.isPresent()){
-			
-			Employee eOggetto = e.get();
-			Task tOggetto = t.get();
-			Set<Task> t2 = eOggetto.getTasks();
-			t2.add(tOggetto);
-			employeeService.save(eOggetto);
-		}else
-			System.out.println("EMP-TASK non trovati");
+		List <Task> t = taskService.findAll();
+		System.out.println(t);
+		
 	}
 
 }
