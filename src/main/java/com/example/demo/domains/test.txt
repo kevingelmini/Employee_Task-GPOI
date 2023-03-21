@@ -11,7 +11,6 @@ package com.example.demo.domains;
 
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -57,7 +56,7 @@ public class Task {
     private Project project;
     //Long project_id;
 
-    @ManyToMany(mappedBy = "tasks",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "tasks",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     //Non serve perché sono simmetriche
     // @JoinTable    (
     //     name = "emp_tasks", 
@@ -77,7 +76,7 @@ public class Task {
 
     LocalDate task_end_date;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
+    @ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
     @MapsId("employee_id")
     @JoinColumn(
             name = "coordinator_id", // Long coordinator_id;
@@ -109,10 +108,6 @@ public class Task {
 
         public void setTask_id(Long task_id) {
                 this.task_id = task_id;
-        }
-        @JsonIgnore
-        public Set<Employee> getAllDip(){
-                return employees;
         }
 
         public String getTask_name() {
@@ -169,9 +164,10 @@ public class Task {
                 this.task_end_date = task_end_date;
         }
         @JsonIgnore
-        public String getCoordinator() {
+        public Employee getCoordinator() {
                 return this.coordinator.first_name;
         }
+        
 
         public void setCoordinator(Employee coordinator) {
                 this.coordinator = coordinator;
