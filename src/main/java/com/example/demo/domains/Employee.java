@@ -1,8 +1,12 @@
 package com.example.demo.domains;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
@@ -49,7 +53,7 @@ public class Employee {
     
     //LAZY: rallenta le richieste. Da la possiboità di ottimizzare la gestione della memoria. JSON non fa richieste.
     //EAGER: carica preventivamente i dati
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
       name = "emp_tasks", 
       joinColumns = @JoinColumn(name = "employee_id", nullable = false), 
@@ -144,9 +148,14 @@ public class Employee {
         this.department_id = department_id;
     }
 
+    public List<Long> getProjects_project_id() {
+        return this.projects.stream().map(e -> e.getProject_id()).collect(Collectors.toList());
+    }
+
     public Set<Project> getProjects() {
         return this.projects;
     }
+
 
     public void setProjects(Set<Project> projects) {
         this.projects = projects;

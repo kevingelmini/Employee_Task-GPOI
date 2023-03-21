@@ -19,9 +19,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.domains.*;
 import com.example.demo.repositories.TaskRepository;
-import com.example.demo.services.*;;  
-@RestController
+import com.example.demo.services.*;
 
+import jakarta.transaction.Transactional;;  
+
+
+@RestController
+@Transactional 
 @RequestMapping(path = "/api/task", produces = "application/json")
 @CrossOrigin(origins = "*", methods = { RequestMethod.GET, RequestMethod.POST, RequestMethod.DELETE,
         RequestMethod.PUT }, maxAge = 3600)

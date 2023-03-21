@@ -19,8 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.domains.Employee;
 import com.example.demo.services.EmployeeService;
 
-@RestController
+import jakarta.transaction.Transactional;
 
+@RestController
+@Transactional
 @RequestMapping(path = "/api/employee", produces = "application/json")
 @CrossOrigin(origins = "*", methods = { RequestMethod.GET, RequestMethod.POST, RequestMethod.DELETE,
         RequestMethod.PUT }, maxAge = 3600)

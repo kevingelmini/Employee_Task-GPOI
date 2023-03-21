@@ -1,8 +1,12 @@
 package com.example.demo.domains;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
 
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -47,7 +51,8 @@ PROJECT_END_DATE date */
 
     
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
+    @ManyToOne( cascade = { CascadeType.ALL })
+    //@LazyToOne(LazyToOneOption.NO_PROXY)
     @MapsId("employee_id")
     @JoinColumn(
             name = "leader_id",
@@ -117,7 +122,7 @@ PROJECT_END_DATE date */
         this.project_end_date = project_end_date;
     }
 
-    @JsonIgnore
+   // @JsonIgnore
     public Employee getLeader() {
         return this.leader;
     }
@@ -130,7 +135,7 @@ PROJECT_END_DATE date */
         this.leader = leader;
     }
 
-    @JsonIgnore
+    //@JsonIgnore
     public Set<Task> getTasks() {
         return this.tasks;
     }
