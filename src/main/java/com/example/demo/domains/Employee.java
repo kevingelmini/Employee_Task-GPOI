@@ -70,6 +70,8 @@ public class Employee {
     public Employee() {
     }
 
+
+    
     public Employee(Long employee_id, String first_name, String last_name, String email, BigDecimal salary, double total_work_percentage, Long membership_count, Long department_id, Set<Project> projects, Set<Task> coordinator_tasks, Set<Task> tasks) {
         this.employee_id = employee_id;
         this.first_name = first_name;

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.domains.*;
+import com.example.demo.domains.records.TaskRecord;
 import com.example.demo.repositories.TaskRepository;
 import com.example.demo.services.*;
 
@@ -32,8 +33,8 @@ import jakarta.transaction.Transactional;;
 
 public class TaskController {   
     TaskService taskService;
-    @Autowired
-    TaskRepository t;
+    // @Autowired
+    // TaskRepository t;
     //DI
     public TaskController(TaskService taskService) {
         this.taskService = taskService;
@@ -53,20 +54,29 @@ public class TaskController {
     }
   
     @PostMapping("")
-    public ResponseEntity<Task> add(@RequestBody Task entity) {
+    public ResponseEntity<TaskRecord> add(@RequestBody TaskRecord entity) {
+        
         if (this.taskService.save(entity).isPresent())
-            return new ResponseEntity<Task>(entity, HttpStatus.CREATED);
+            return new ResponseEntity<TaskRecord>(entity, HttpStatus.CREATED);
         else
-            return new ResponseEntity<Task>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<TaskRecord>(HttpStatus.BAD_REQUEST);
     }
 
     @PutMapping("")
-    public ResponseEntity<Task> update(@RequestBody Task entity) {
+    public ResponseEntity<TaskRecord> adda(@RequestBody TaskRecord entity) {
+        
         if (this.taskService.save(entity).isPresent())
-            return new ResponseEntity<Task>(entity, HttpStatus.CREATED);
+            return new ResponseEntity<TaskRecord>(entity, HttpStatus.CREATED);
         else
-            return new ResponseEntity<Task>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<TaskRecord>(HttpStatus.BAD_REQUEST);
     }
+    // @PutMapping("")
+    // public ResponseEntity<Task> update(@RequestBody Task entity) {
+    //     if (this.taskService.save(entity).isPresent())
+    //         return new ResponseEntity<Task>(entity, HttpStatus.CREATED);
+    //     else
+    //         return new ResponseEntity<Task>(HttpStatus.BAD_REQUEST);
+    // }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Task> delete(@PathVariable Long id) {

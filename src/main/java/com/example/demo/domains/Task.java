@@ -49,6 +49,7 @@ public class Task{
         @Column(length = 1)
         String task_status;
 
+        
         @ManyToOne( cascade = { CascadeType.ALL })
         @MapsId("project_id")
         @JoinColumn(name = "project_id", nullable = false, foreignKey = @ForeignKey(name = "fk_tasks_project_id"))
@@ -83,7 +84,9 @@ public class Task{
         private Employee coordinator;
 
         public Task() {
+
         }
+
 
         public Task(Long task_id, String task_name, String task_status, Project project, Set<Employee> employess,
                         LocalDate task_start_date, LocalDate task_end_date, Employee coordinator) {
@@ -100,9 +103,9 @@ public class Task{
         public Long getCoordinator_id() {
                 return this.coordinator.employee_id;
         }
-        public String getCoordinator_first_name() {
-                return this.coordinator.first_name;
-        }
+        // public String getCoordinator_first_name() {
+        //         return this.coordinator.first_name;
+        // }
 
         public Long getTask_id() {
                 return this.task_id;
@@ -132,12 +135,15 @@ public class Task{
                 return this.project;
         }
 
-        public Long getProject_project_id() {
+        public Long getProject_id() {
                 return this.project.project_id;
         }
 
         public void setProject(Project project) {
                 this.project = project;
+        }
+        public void setProject_id(Project project) {
+                this.project.project_id = project.project_id;
         }
 
         public Set<Employee> getEmployees() {
