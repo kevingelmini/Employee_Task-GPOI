@@ -81,7 +81,9 @@ public class Task{
                 referencedColumnName = "employee_id",
                 nullable = false, 
                 foreignKey = @ForeignKey(name = "fk_projects_coordinator_id"))
-        @JsonBackReference(value="employee_id")
+       
+        @JsonIgnore       
+        @JsonBackReference
         private Employee coordinator= new Employee();
 
 
@@ -92,8 +94,8 @@ public class Task{
                 referencedColumnName = "project_id",
                 nullable = false, 
                 foreignKey = @ForeignKey(name = "fk_tasks_project_id"))
-        //@JsonIgnore
-        @JsonBackReference(value="project_id")
+        @JsonIgnore
+        @JsonBackReference
         private Project project=new Project();
 
 
@@ -138,12 +140,19 @@ public class Task{
         public Project getProject() {
                 return this.project;
         }
-        // public Long getProject_id() {
-        //         return this.project.project_id;
-        // }
-        // public void setProject_id(Long project_id) {
-        //         this.project.project_id=project_id;
-        // }
+        public Long getProject_id() {
+                return this.project.project_id;
+        }
+        public void setProject_id(Long project_id) {
+                this.project.setProject_id(project_id);
+        }
+
+        public Long getCoordinator_id() {
+                return this.coordinator.employee_id;
+        }
+        public void setCoordinator_id(Long coordinator_id) {
+                this.coordinator.setEmployee_id(coordinator_id);
+        }
 
         public void setProject(Project project) {
                 this.project = project;

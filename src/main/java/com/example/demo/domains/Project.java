@@ -65,13 +65,16 @@ PROJECT_END_DATE date */
                     )
             ) 
     //@JsonIgnore
+    
     @JsonBackReference
     private Employee leader=new Employee();
 
 
     @OneToMany(mappedBy = "project", cascade = { CascadeType.ALL }, orphanRemoval = true)
+    
     @JsonManagedReference
-    //@JsonIgnore
+    
+    @JsonIgnore
     Set<Task> tasks= new HashSet<>();
 
     public Project() {
@@ -127,7 +130,7 @@ PROJECT_END_DATE date */
         this.project_end_date = project_end_date;
     }
 
-   // @JsonIgnore
+    @JsonIgnore
     public Employee getLeader() {
         return this.leader;
     }
@@ -140,7 +143,7 @@ PROJECT_END_DATE date */
         this.leader = leader;
     }
 
-    //@JsonIgnore
+    @JsonIgnore
     public Set<Task> getTasks() {
         return this.tasks;
     }

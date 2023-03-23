@@ -54,7 +54,7 @@ public class Employee {
     Set<Project> projects= new HashSet<>();
 
     @OneToMany(mappedBy = "coordinator", cascade = { CascadeType.ALL }, orphanRemoval = true)
-    //@JsonIgnore
+    @JsonIgnore
     @JsonManagedReference
     Set<Task> coordinator_tasks= new HashSet<>();
     

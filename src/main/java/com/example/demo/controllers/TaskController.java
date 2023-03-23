@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.domains.*;
-
+import com.example.demo.domains.records.TaskRecord;
 import com.example.demo.services.*;
 
 
@@ -59,12 +59,14 @@ public class TaskController {
 
 
     @PostMapping("")
-    public ResponseEntity<Task> add(@RequestBody Task entity) {
+    public ResponseEntity<Task> add(@RequestBody TaskRecord entity) {
+
         Optional<Task> t=this.taskService.save(entity);
         if (t.isPresent())
             return new ResponseEntity<Task>(t.get(), HttpStatus.CREATED);
         else
             return new ResponseEntity<Task>(HttpStatus.BAD_REQUEST);
+        
     }
     
     // @PostMapping("")

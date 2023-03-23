@@ -36,52 +36,26 @@ public class TaskService {
         return opt;
     }
 
-    // public Optional<Task> save(TaskRecord entity ){
-    // Task t = new Task();
-    // Optional<Employee> opte= this.employeeRepo.findById(entity.coordinator_id());
-    // Optional<Project> optp= this.projectService.findById(entity.project_id());
-    // Project p= optp.get();
-    // t.setCoordinator(opte.get());
+    public Optional<Task> save(TaskRecord taskRecord) {
 
-    // t.setProject(p);
-    // t.setTask_end_date(entity.task_end_date());
-    // t.setTask_start_date(entity.task_start_date());
-    // t.setTask_status(entity.task_status());
-    // t.setTask_id(entity.task_id());
-    // t.setTask_name(entity.task_name());
-    // Task task=this.taskRepository.save(t);
-    // Optional<Task> opt=Optional.ofNullable(task);
-    // return opt;
-    // }
-    // public Optional<Task> save(Task entity ){
-    public Optional<Task> save(Task entity) {
         Optional<Task> opt = Optional.ofNullable(null);
-        Optional<Employee> opte = this.employeeRepo.findById(entity.getCoordinator().getEmployee_id());
+        Optional<Employee> opte = this.employeeRepo.findById(taskRecord.coordinator_id());
 
-        Optional<Project> optp = this.projectRepo.findById(entity.getProject().getProject_id());
+        Optional<Project> optp = this.projectRepo.findById(taskRecord.project_id());
         if (opte.isPresent() && optp.isPresent()) {
-            Employee e = opte.get();
-            entity.setCoordinator(e);
-            Project p = optp.get();
-            entity.setProject(p);
-            Task task = this.taskRepository.save(entity);
+            Task t = new Task();
+            t.setTask_id(taskRecord.task_id());
+            t.setCoordinator(opte.get());
+            t.setTask_name(taskRecord.task_name());
+            t.setProject(optp.get());
+            t.setTask_start_date(taskRecord.task_start_date());
+            t.setTask_end_date(taskRecord.task_end_date());
+            t.setTask_status(taskRecord.task_status());
+            Task task = this.taskRepository.save(t);
             opt = Optional.ofNullable(task);
 
         }
         return opt;
-
-        // return this.employeeRepo.
-        // findById(entity.getCoordinator().getEmployee_id())
-        // .map((coordinator) -> {
-        // return this.projectRepo.findById(entity.getProject().getProject_id())
-        // .map(project -> {
-        // entity.setCoordinator(coordinator);
-        // entity.setProject(project);
-        // Task t= this.taskRepository.save(entity);
-        // return t;
-        // })
-        // })
-
     }
 
     public Optional<Task> update(Task entity) {
