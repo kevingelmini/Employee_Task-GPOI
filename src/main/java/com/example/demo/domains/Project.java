@@ -8,8 +8,10 @@ import java.util.Set;
 import org.hibernate.annotations.LazyToOne;
 import org.hibernate.annotations.LazyToOneOption;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
@@ -52,22 +54,25 @@ PROJECT_END_DATE date */
     
 
     @ManyToOne( cascade = { CascadeType.ALL })
-    //@LazyToOne(LazyToOneOption.NO_PROXY)
-    @MapsId("employee_id")
+    //@MapsId("employee_id")
     @JoinColumn(
-            name = "leader_id",
+            name = "leader_id" ,
+            //updatable = true, insertable = true,
+           // referencedColumnName = "employee_id",
             nullable = false,
             foreignKey = @ForeignKey(
                     name = "fk_projects_leader_id"
                     )
             ) 
-    @JsonIgnore
-    private Employee leader;
+    //@JsonIgnore
+    @JsonBackReference
+    private Employee leader=new Employee();
 
 
     @OneToMany(mappedBy = "project", cascade = { CascadeType.ALL }, orphanRemoval = true)
+    @JsonManagedReference
     //@JsonIgnore
-    Set<Task> tasks;
+    Set<Task> tasks= new HashSet<>();
 
     public Project() {
     }

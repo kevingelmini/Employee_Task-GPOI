@@ -19,6 +19,7 @@ import java.util.Set;
 import org.hibernate.annotations.LazyToOne;
 import org.hibernate.annotations.LazyToOneOption;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -40,6 +41,7 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "tasks")
 public class Task{
+
         @Id
         Long task_id;
 
@@ -50,11 +52,7 @@ public class Task{
         String task_status;
 
         
-        @ManyToOne( cascade = { CascadeType.ALL })
-        @MapsId("project_id")
-        @JoinColumn(name = "project_id", nullable = false, foreignKey = @ForeignKey(name = "fk_tasks_project_id"))
-        @JsonIgnore
-        private Project project;
+        
         // Long project_id;
 
         @ManyToMany(mappedBy = "tasks", cascade = CascadeType.ALL)
@@ -69,43 +67,49 @@ public class Task{
         // )
         // )
         @JsonIgnore
-        Set<Employee> employees;
+        Set<Employee> employees=new HashSet<>();
 
         LocalDate task_start_date;
 
         LocalDate task_end_date;
 
         @ManyToOne( cascade = { CascadeType.ALL })
-        @MapsId("employee_id")
+        //@MapsId("employee_id")
        // @LazyToOne(LazyToOneOption.NO_PROXY)
-        @JoinColumn(name = "coordinator_id", // Long coordinator_id;
-                        nullable = false, foreignKey = @ForeignKey(name = "fk_projects_coordinator_id"))
-        @JsonIgnore
-        private Employee coordinator;
+        @JoinColumn(
+                name = "coordinator_id", 
+                referencedColumnName = "employee_id",
+                nullable = false, 
+                foreignKey = @ForeignKey(name = "fk_projects_coordinator_id"))
+        @JsonBackReference(value="employee_id")
+        private Employee coordinator= new Employee();
+
+
+        @ManyToOne( cascade = { CascadeType.ALL })
+        //@MapsId("project_id")
+        @JoinColumn(
+                name = "project_id",
+                referencedColumnName = "project_id",
+                nullable = false, 
+                foreignKey = @ForeignKey(name = "fk_tasks_project_id"))
+        //@JsonIgnore
+        @JsonBackReference(value="project_id")
+        private Project project=new Project();
+
 
         public Task() {
-
         }
 
-
-        public Task(Long task_id, String task_name, String task_status, Project project, Set<Employee> employess,
-                        LocalDate task_start_date, LocalDate task_end_date, Employee coordinator) {
+        public Task(Long task_id, String task_name, String task_status, Project project, Set<Employee> employees, LocalDate task_start_date, LocalDate task_end_date, Employee coordinator) {
                 this.task_id = task_id;
                 this.task_name = task_name;
                 this.task_status = task_status;
                 this.project = project;
-                this.employees = employess;
+                this.employees = employees;
                 this.task_start_date = task_start_date;
                 this.task_end_date = task_end_date;
                 this.coordinator = coordinator;
         }
-
-        public Long getCoordinator_id() {
-                return this.coordinator.employee_id;
-        }
-        // public String getCoordinator_first_name() {
-        //         return this.coordinator.first_name;
-        // }
 
         public Long getTask_id() {
                 return this.task_id;
@@ -130,28 +134,27 @@ public class Task{
         public void setTask_status(String task_status) {
                 this.task_status = task_status;
         }
-        @JsonIgnore
+
         public Project getProject() {
                 return this.project;
         }
-
-        public Long getProject_id() {
-                return this.project.project_id;
-        }
+        // public Long getProject_id() {
+        //         return this.project.project_id;
+        // }
+        // public void setProject_id(Long project_id) {
+        //         this.project.project_id=project_id;
+        // }
 
         public void setProject(Project project) {
                 this.project = project;
-        }
-        public void setProject_id(Project project) {
-                this.project.project_id = project.project_id;
         }
 
         public Set<Employee> getEmployees() {
                 return this.employees;
         }
 
-        public void setEmployees(Set<Employee> employess) {
-                this.employees = employess;
+        public void setEmployees(Set<Employee> employees) {
+                this.employees = employees;
         }
 
         public LocalDate getTask_start_date() {
@@ -169,7 +172,7 @@ public class Task{
         public void setTask_end_date(LocalDate task_end_date) {
                 this.task_end_date = task_end_date;
         }
-        @JsonIgnore
+
         public Employee getCoordinator() {
                 return this.coordinator;
         }
@@ -198,8 +201,8 @@ public class Task{
                 return this;
         }
 
-        public Task employess(Set<Employee> employess) {
-                setEmployees(employess);
+        public Task employees(Set<Employee> employees) {
+                setEmployees(employees);
                 return this;
         }
 
@@ -219,14 +222,14 @@ public class Task{
         }
 
         @Override
-        public boolean equals(Object o) {
-                if (o == this)
-                        return true;
-                if (!(o instanceof Task)) {
-                        return false;
-                }
-                Task task = (Task) o;
-                return Objects.equals(task_id, task.task_id);
+    public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        if (!(o instanceof Task)) {
+            return false;
+        }
+        Task task = (Task) o;
+        return Objects.equals(task_id, task.task_id);
         }
 
         @Override
@@ -237,15 +240,15 @@ public class Task{
         @Override
         public String toString() {
                 return "{" +
-                                " task_id='" + getTask_id() + "'" +
-                                ", task_name='" + getTask_name() + "'" +
-                                ", task_status='" + getTask_status() + "'" +
-                                // ", project='" + getProject() + "'" +
-                                ", employess='" + getEmployees() + "'" +
-                                ", task_start_date='" + getTask_start_date() + "'" +
-                                ", task_end_date='" + getTask_end_date() + "'" +
-                                ", coordinator='" + getCoordinator() + "'" +
-                                "}";
+                        " task_id='" + getTask_id() + "'" +
+                        ", task_name='" + getTask_name() + "'" +
+                        ", task_status='" + getTask_status() + "'" +
+                        ", project='" + getProject() + "'" +
+                        ", employees='" + getEmployees() + "'" +
+                        ", task_start_date='" + getTask_start_date() + "'" +
+                        ", task_end_date='" + getTask_end_date() + "'" +
+                        ", coordinator='" + getCoordinator() + "'" +
+                        "}";
         }
 
 }

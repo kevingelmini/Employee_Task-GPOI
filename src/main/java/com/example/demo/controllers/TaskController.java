@@ -5,6 +5,8 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,15 +20,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.domains.*;
-import com.example.demo.domains.records.TaskRecord;
-import com.example.demo.repositories.TaskRepository;
+
 import com.example.demo.services.*;
 
-import jakarta.transaction.Transactional;;  
+
+import jakarta.transaction.Transactional;
 
 
 @RestController
-@Transactional 
+//,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE
+//@RequestMapping(path = "/api/task", produces = "application/json",consumes = MediaType.APPLICATION_JSON_VALUE)
 @RequestMapping(path = "/api/task", produces = "application/json")
 @CrossOrigin(origins = "*", methods = { RequestMethod.GET, RequestMethod.POST, RequestMethod.DELETE,
         RequestMethod.PUT }, maxAge = 3600)
@@ -41,8 +44,8 @@ public class TaskController {
     }
 
     @GetMapping()
-    public List<Task> getTasks() {
-        return this.taskService.findAll();
+    public ResponseEntity<List<Task>> getTasks() {
+        return new ResponseEntity<List<Task>>(this.taskService.findAll(),HttpStatus.OK);
     }
     @GetMapping("{id}")
     public ResponseEntity<Task> getEmployee(@PathVariable Long id) {
@@ -52,24 +55,37 @@ public class TaskController {
         else    
             return new ResponseEntity<Task>(HttpStatus.NOT_FOUND);
     }
-  
-    @PostMapping("")
-    public ResponseEntity<TaskRecord> add(@RequestBody TaskRecord entity) {
-        
-        if (this.taskService.save(entity).isPresent())
-            return new ResponseEntity<TaskRecord>(entity, HttpStatus.CREATED);
-        else
-            return new ResponseEntity<TaskRecord>(HttpStatus.BAD_REQUEST);
-    }
+    @Transactional 
 
-    @PutMapping("")
-    public ResponseEntity<TaskRecord> adda(@RequestBody TaskRecord entity) {
-        
-        if (this.taskService.save(entity).isPresent())
-            return new ResponseEntity<TaskRecord>(entity, HttpStatus.CREATED);
+
+    @PostMapping("")
+    public ResponseEntity<Task> add(@RequestBody Task entity) {
+        Optional<Task> t=this.taskService.save(entity);
+        if (t.isPresent())
+            return new ResponseEntity<Task>(t.get(), HttpStatus.CREATED);
         else
-            return new ResponseEntity<TaskRecord>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<Task>(HttpStatus.BAD_REQUEST);
     }
+    
+    // @PostMapping("")
+    // public ResponseEntity<TaskRecord> add(@RequestBody TaskRecord entity) {
+        
+    //     if (this.taskService.save(entity).isPresent())
+    //         return new ResponseEntity<TaskRecord>(entity, HttpStatus.CREATED);
+    //     else
+    //         return new ResponseEntity<TaskRecord>(HttpStatus.BAD_REQUEST);
+    // }
+    // // @PutMapping("")
+    // public ResponseEntity<Task> adda(@RequestBody TaskRecord entity) {
+    //     Optional<Task> t= this.taskService.save(entity);
+    //     if (t.isPresent())
+    //         return new ResponseEntity<Task>(t.get(), HttpStatus.CREATED);
+    //     else
+    //         return new ResponseEntity<Task>(HttpStatus.BAD_REQUEST);
+    // }
+    
+    
+    
     // @PutMapping("")
     // public ResponseEntity<Task> update(@RequestBody Task entity) {
     //     if (this.taskService.save(entity).isPresent())

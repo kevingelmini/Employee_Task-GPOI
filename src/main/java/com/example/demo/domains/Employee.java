@@ -8,6 +8,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -43,13 +45,18 @@ public class Employee {
     Long department_id;
 
   
-    @OneToMany(mappedBy = "leader", cascade = { CascadeType.ALL }, orphanRemoval = true)
+    @OneToMany(mappedBy = "leader", 
+        
+        cascade = { CascadeType.ALL }, 
+        orphanRemoval = true)
     //@JsonIgnore
-    Set<Project> projects;
+    @JsonManagedReference
+    Set<Project> projects= new HashSet<>();
 
     @OneToMany(mappedBy = "coordinator", cascade = { CascadeType.ALL }, orphanRemoval = true)
-    @JsonIgnore
-    Set<Task> coordinator_tasks;
+    //@JsonIgnore
+    @JsonManagedReference
+    Set<Task> coordinator_tasks= new HashSet<>();
     
     //LAZY: rallenta le richieste. Da la possiboità di ottimizzare la gestione della memoria. JSON non fa richieste.
     //EAGER: carica preventivamente i dati
