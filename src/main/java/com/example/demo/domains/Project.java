@@ -53,7 +53,7 @@ PROJECT_END_DATE date */
 
     
 
-    @ManyToOne( cascade = { CascadeType.ALL })
+    @ManyToOne( cascade = { CascadeType.MERGE,CascadeType.PERSIST })
     //@MapsId("employee_id")
     @JoinColumn(
             name = "leader_id" ,
@@ -70,7 +70,7 @@ PROJECT_END_DATE date */
     private Employee leader=new Employee();
 
 
-    @OneToMany(mappedBy = "project", cascade = { CascadeType.ALL }, orphanRemoval = true)
+    @OneToMany(mappedBy = "project", cascade = {CascadeType.MERGE,CascadeType.PERSIST}, orphanRemoval = true)
     
     @JsonManagedReference
     

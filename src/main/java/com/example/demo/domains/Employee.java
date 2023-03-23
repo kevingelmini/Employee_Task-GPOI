@@ -47,20 +47,20 @@ public class Employee {
   
     @OneToMany(mappedBy = "leader", 
         
-        cascade = { CascadeType.ALL }, 
+        cascade = { CascadeType.MERGE,CascadeType.PERSIST }, 
         orphanRemoval = true)
     //@JsonIgnore
     @JsonManagedReference
     Set<Project> projects= new HashSet<>();
 
-    @OneToMany(mappedBy = "coordinator", cascade = { CascadeType.ALL }, orphanRemoval = true)
+    @OneToMany(mappedBy = "coordinator", cascade = {CascadeType.MERGE,CascadeType.PERSIST}, orphanRemoval = true)
     @JsonIgnore
     @JsonManagedReference
     Set<Task> coordinator_tasks= new HashSet<>();
     
     //LAZY: rallenta le richieste. Da la possiboità di ottimizzare la gestione della memoria. JSON non fa richieste.
     //EAGER: carica preventivamente i dati
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = {CascadeType.MERGE,CascadeType.PERSIST})
     @JoinTable(
       name = "emp_tasks", 
       joinColumns = @JoinColumn(name = "employee_id", nullable = false), 

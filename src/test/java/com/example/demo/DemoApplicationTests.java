@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.example.demo.domains.Employee;
 import com.example.demo.domains.Task;
 import com.example.demo.repositories.EmployeeRepo;
+import com.example.demo.repositories.TaskRepository;
 import com.example.demo.services.EmployeeService;
 import com.example.demo.services.TaskService;
 
@@ -23,6 +24,8 @@ class DemoApplicationTests {
 	@Autowired
 	TaskService taskService;
 
+	@Autowired 
+	TaskRepository taskRepository;
 	@Test
 	void contextLoads() {
 
@@ -31,4 +34,17 @@ class DemoApplicationTests {
 		
 	}
 
+	@Test
+	void contextLoads_d() {
+
+		Optional<Task> t = taskService.findById(1959L);
+		if (t.isPresent()){
+			//System.out.println(t);
+			//taskService.delete(t.get().getTask_id());
+			taskRepository.delete(t.get());
+
+		}
+
+		
+	}
 }

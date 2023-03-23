@@ -55,7 +55,7 @@ public class Task{
         
         // Long project_id;
 
-        @ManyToMany(mappedBy = "tasks", cascade = CascadeType.ALL)
+        @ManyToMany(mappedBy = "tasks", cascade = {CascadeType.MERGE,CascadeType.PERSIST})
         // Non serve perché sono simmetriche
         // @JoinTable (
         // name = "emp_tasks",
@@ -73,7 +73,7 @@ public class Task{
 
         LocalDate task_end_date;
 
-        @ManyToOne( cascade = { CascadeType.ALL })
+        @ManyToOne( cascade =  {CascadeType.MERGE,CascadeType.PERSIST})// {CascadeType.MERGE,CascadeType.PERSIST})
         //@MapsId("employee_id")
        // @LazyToOne(LazyToOneOption.NO_PROXY)
         @JoinColumn(
@@ -87,7 +87,7 @@ public class Task{
         private Employee coordinator= new Employee();
 
 
-        @ManyToOne( cascade = { CascadeType.ALL })
+        @ManyToOne( cascade = { CascadeType.MERGE,CascadeType.PERSIST })
         //@MapsId("project_id")
         @JoinColumn(
                 name = "project_id",
