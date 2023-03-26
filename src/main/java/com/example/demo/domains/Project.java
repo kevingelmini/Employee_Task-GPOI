@@ -5,23 +5,16 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import org.hibernate.annotations.LazyToOne;
-import org.hibernate.annotations.LazyToOneOption;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ForeignKey;
 
@@ -54,7 +47,6 @@ PROJECT_END_DATE date */
     
 
     @ManyToOne( cascade = { CascadeType.MERGE,CascadeType.PERSIST })
-    //@MapsId("employee_id")
     @JoinColumn(
             name = "leader_id" ,
             //updatable = true, insertable = true,
@@ -64,7 +56,7 @@ PROJECT_END_DATE date */
                     name = "fk_projects_leader_id"
                     )
             ) 
-    //@JsonIgnore
+
     
     @JsonBackReference
     private Employee leader=new Employee();
@@ -72,7 +64,7 @@ PROJECT_END_DATE date */
 
     @OneToMany(mappedBy = "project", cascade = {CascadeType.MERGE,CascadeType.PERSIST}, orphanRemoval = true)
     
-    @JsonManagedReference
+    
     
     @JsonIgnore
     Set<Task> tasks= new HashSet<>();

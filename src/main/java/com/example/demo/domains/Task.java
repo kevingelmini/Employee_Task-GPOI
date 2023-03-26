@@ -74,8 +74,7 @@ public class Task{
         LocalDate task_end_date;
 
         @ManyToOne( cascade =  {CascadeType.MERGE,CascadeType.PERSIST})// {CascadeType.MERGE,CascadeType.PERSIST})
-        //@MapsId("employee_id")
-       // @LazyToOne(LazyToOneOption.NO_PROXY)
+
         @JoinColumn(
                 name = "coordinator_id", 
                 referencedColumnName = "employee_id",
@@ -83,19 +82,19 @@ public class Task{
                 foreignKey = @ForeignKey(name = "fk_projects_coordinator_id"))
        
         @JsonIgnore       
-        @JsonBackReference
+        
         private Employee coordinator= new Employee();
 
 
         @ManyToOne( cascade = { CascadeType.MERGE,CascadeType.PERSIST })
-        //@MapsId("project_id")
+        
         @JoinColumn(
                 name = "project_id",
                 referencedColumnName = "project_id",
                 nullable = false, 
                 foreignKey = @ForeignKey(name = "fk_tasks_project_id"))
         @JsonIgnore
-        @JsonBackReference
+       
         private Project project=new Project();
 
 

@@ -50,3 +50,7 @@ La FK constraint prevede con  CascadeType.MERGE,CascadeType.PERSIST
 
 6) Ricordarsi che le fk constaint anche se impostate su CascadeType.MERGE,CascadeType.PERSIST, nel db saranno restricted sia in update che in delete.
    Si occuperà l'ORM della cancellazione/aggiornamneto a cascata
+
+
+
+   post 
