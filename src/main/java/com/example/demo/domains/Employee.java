@@ -156,11 +156,12 @@ public class Employee {
     public void setDepartment_id(Long department_id) {
         this.department_id = department_id;
     }
-
+    //List di tutti gli id dei progetti di cui un employee fa parte
     public List<Long> getProjects_project_id() {
         return this.projects.stream().map(e -> e.getProject_id()).collect(Collectors.toList());
-    }
-
+    } 
+    
+    
     public Set<Project> getProjects() {
         return this.projects;
     }

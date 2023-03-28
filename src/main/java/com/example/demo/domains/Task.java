@@ -94,7 +94,6 @@ public class Task{
                 nullable = false, 
                 foreignKey = @ForeignKey(name = "fk_tasks_project_id"))
         @JsonIgnore
-       
         private Project project=new Project();
 
 

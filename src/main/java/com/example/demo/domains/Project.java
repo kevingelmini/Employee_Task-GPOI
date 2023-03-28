@@ -23,6 +23,7 @@ import jakarta.persistence.CascadeType;
 @Entity
 @Table(name="projects")
 public class Project {
+    //RAPRESETAZONE AD OGGETTI DI UNO SCHEMA RELAZIONALE. Questa rappresentazione fa perdere informazioni. Questo passaggio tra ORM e modello concettuale perdiamo informazioni
     /*Table: projects
 Columns:
 PROJECT_ID bigint PK 
