@@ -23,12 +23,26 @@ import com.example.demo.services.EmployeeService;
 import jakarta.transaction.Transactional;
 
 @RestController
+//starter web dependencies
+// EmployeeController promosso ad oggetto specializzato per gestire le richieste
+// crud di tipo rest
+// Spring RestController annotation is used to create RESTful api(Con richieste
+// di tipo CRUD)
+// Rest API implementato tramite protocollo http
+// web services using Spring MVC.
+//Istanziare APIs
 @Transactional
 @RequestMapping(path = "/api/employee", produces = "application/json")
+// Path che consente di stabilire l'url base a tutte le api di questo controller
+// Permette il versioning del backend
+// Interpretazione dei dati nella maniera corretta (application/json); output
+// oggetto JSON; input accetto oggetto JSON
+// Frame-tagging
 @CrossOrigin(origins = "*", methods = { RequestMethod.GET, RequestMethod.POST, RequestMethod.DELETE,
         RequestMethod.PUT }, maxAge = 3600)
+// Permette di abilitare l'accesso da un client al server CROSS - ORIGIN
+// HttpStatus --> Java Enums
 public class EmployeeController {
-    //DT= --> DATA TRANSFER OBJECT: permette di filtrare le informazioni in uscita
     EmployeeService employeeService;
 
     public EmployeeController(EmployeeService employeeService) {
@@ -47,7 +61,8 @@ public class EmployeeController {
         else    
             return new ResponseEntity<Employee>(HttpStatus.NOT_FOUND);
     }
-
+    //se non c'è la aggiunge
+    //se c'è la aggiorna
     @PostMapping("")
     public ResponseEntity<Employee> add(@RequestBody Employee entity) {
         if (this.employeeService.save(entity).isPresent())

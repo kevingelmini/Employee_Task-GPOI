@@ -68,33 +68,6 @@ public class TaskController {
             return new ResponseEntity<Task>(HttpStatus.BAD_REQUEST);
         
     }
-    
-    // @PostMapping("")
-    // public ResponseEntity<TaskRecord> add(@RequestBody TaskRecord entity) {
-        
-    //     if (this.taskService.save(entity).isPresent())
-    //         return new ResponseEntity<TaskRecord>(entity, HttpStatus.CREATED);
-    //     else
-    //         return new ResponseEntity<TaskRecord>(HttpStatus.BAD_REQUEST);
-    // }
-    // // @PutMapping("")
-    // public ResponseEntity<Task> adda(@RequestBody TaskRecord entity) {
-    //     Optional<Task> t= this.taskService.save(entity);
-    //     if (t.isPresent())
-    //         return new ResponseEntity<Task>(t.get(), HttpStatus.CREATED);
-    //     else
-    //         return new ResponseEntity<Task>(HttpStatus.BAD_REQUEST);
-    // }
-    
-    
-    
-    // @PutMapping("")
-    // public ResponseEntity<Task> update(@RequestBody Task entity) {
-    //     if (this.taskService.save(entity).isPresent())
-    //         return new ResponseEntity<Task>(entity, HttpStatus.CREATED);
-    //     else
-    //         return new ResponseEntity<Task>(HttpStatus.BAD_REQUEST);
-    // }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Task> delete(@PathVariable Long id) {

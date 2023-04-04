@@ -11,7 +11,8 @@ import com.example.demo.domains.Employee;
 import com.example.demo.domains.Task;
 import com.example.demo.repositories.EmployeeRepo;
 import com.example.demo.repositories.TaskRepository;
-
+//regole e vincoli,business logic
+//AUTODOCUMENTANTE
 @Service
 public class EmployeeService {
     EmployeeRepo employeeRepo;

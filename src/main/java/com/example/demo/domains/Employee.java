@@ -43,15 +43,31 @@ public class Employee {
 
     Long membership_count;
     Long department_id;
-
+    //ORM
+    // @Column(name ="leader_id", nullable = false)
+    //cascade OnDelete
+    //orphanRemoval quando ci sono progetti che puntano a chiavi dei dipendenti che non ci sono più
+    //eliminare tuple che puntano a niente
+    //Employee(0,N) --> gestisce --> Projects(0,1)
   
     @OneToMany(mappedBy = "leader", 
         
         cascade = { CascadeType.MERGE,CascadeType.PERSIST }, 
         orphanRemoval = true)
+    //FetchType.EAGER --> lui si carica l'oggetto Project riferito al dipendente, ovviamente se lo gestisce
+    //leader --> associazione d'attributo di classe che devo corrispondere all'interno di Project come attributo di classe
+    //@JsonIgnore
+    //@JsonManagedReference
+    //non ignora i projects associati
+    //senza di questo nella tabella employee metterebbe anche informazione sui progetti gestiti
+    //nella mappatura che si delle classi all'itnerno di Spring boot, a diffrenza di SQL, su Employee compare un riferimento a Project
+    //list permette la duplicazione della chiave
     //@JsonIgnore
     @JsonManagedReference
     Set<Project> projects= new HashSet<>();
+        //insieme univoco di progetti gestiti da un impiegato da leader
+    //orm --> object relational mapping
+    //dal punto di vista ORM da un impiegato è possibile trovare i progetti gestiti e anche il contrario, non da SQL. 
 
     @OneToMany(mappedBy = "coordinator", cascade = {CascadeType.MERGE,CascadeType.PERSIST}, orphanRemoval = true)
     @JsonIgnore

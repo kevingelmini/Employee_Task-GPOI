@@ -26,12 +26,11 @@ class DemoApplicationTests {
 
 	@Autowired 
 	TaskRepository taskRepository;
+	//Non testa le API ma solo esclusivamente le funzionalità, non passando per il controller
 	@Test
 	void contextLoads() {
-
 		List <Task> t = taskService.findAll();
 		System.out.println(t);
-		
 	}
 
 	@Test
